@@ -12,11 +12,9 @@ import { getCourses } from '../../helpers/selectors';
 function CourseInfo() {
 	const { courseId } = useParams();
 
-	const courseDetails2 = useSelector(getCourses);
-
 	const navigation = useNavigateToPage('/courses');
 
-	const courseDetails = courseDetails2.filter(
+	const courseDetails = useSelector(getCourses).filter(
 		(course) => course.id === courseId
 	);
 
