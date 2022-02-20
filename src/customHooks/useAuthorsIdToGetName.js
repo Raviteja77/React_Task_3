@@ -5,7 +5,6 @@ import { getAuthors } from '../helpers/selectors';
 function useAuthorsIdToGetName(authorsId) {
 	const authorsList = useSelector(getAuthors);
 	const [list] = useState(authorsList);
-	console.log(authorsList, authorsId);
 	const arrayOfAuthors = [];
 	authorsId.forEach((authorId) =>
 		list.forEach((authorsList) => {

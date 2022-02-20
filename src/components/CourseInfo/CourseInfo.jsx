@@ -1,5 +1,4 @@
 import React from 'react';
-import { mockedCoursesList } from '../../constants';
 import './CourseInfo.css';
 import { useParams } from 'react-router-dom';
 import { convertMinsToHrsMins } from '../../helpers/pipeDuration';
@@ -7,19 +6,27 @@ import Button from '../../common/Button/Button';
 import { constantVariables } from '../../constants';
 import useNavigateToPage from '../../customHooks/useNavigateToPage';
 import useAuthorsIdToGetName from '../../customHooks/useAuthorsIdToGetName';
+import { useSelector } from 'react-redux';
+import { getCourses } from '../../helpers/selectors';
 
 function CourseInfo() {
 	const { courseId } = useParams();
 
+	const courseDetails2 = useSelector(getCourses);
+
 	const navigation = useNavigateToPage('/courses');
 
-	const courseDetails = mockedCoursesList.filter(
+	const courseDetails = courseDetails2.filter(
 		(course) => course.id === courseId
 	);
 
 	const navigateToCourses = () => navigation();
 
-	return (
+	const authors = useAuthorsIdToGetName(
+		courseDetails.length ? courseDetails[0].authors : []
+	);
+
+	return courseDetails.length ? (
 		<div className='course_info'>
 			<Button
 				buttonType={constantVariables.BUTTON_TYPE}
@@ -44,12 +51,13 @@ function CourseInfo() {
 						<strong>Created</strong>: {courseDetails[0].creationDate}
 					</div>
 					<div>
-						<strong>Authors</strong>:
-						{useAuthorsIdToGetName(courseDetails[0].authors)}
+						<strong>Authors</strong>:{authors.join(', ')}
 					</div>
 				</div>
 			</div>
 		</div>
+	) : (
+		<div>No course found</div>
 	);
 }
 
